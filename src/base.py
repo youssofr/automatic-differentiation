@@ -78,6 +78,7 @@ class Dual:
             return Dual(real, dual)
         return Dual(other / self.real, - other * self.dual / (self.real * self.real))
 
+    # TODO: implement division   
     def __divmod__(self, other):
         return NotImplemented 
     __rdivmod__ = __floordiv__ = __rfloordiv__ = __divmod__
@@ -96,6 +97,7 @@ class Dual:
         dual = real * self.dual * log(other)
         return Dual(real, dual)
 
+    # TODO: is there a better way to implement abs?
     def __abs__(self):
         raise TypeError("abs not supported for instance of 'Dual'") 
         # return sqrt(self.real * self.real + self.dual * self.dual)
@@ -115,6 +117,10 @@ class Dual:
     def __ne__(self, other):
         return not self == other
     
+    # TODO: should I implement order as an extension of the reals
+    #       in cases where duals are used just to get derivatives
+    #       where evaluating conditions is relevant?
+    #       Throw a warning that this comparison is taking place.
     def __gt__(self, other):
         return NotImplemented 
     __ge__ = __lt__ = __le__ = __gt__
@@ -132,7 +138,7 @@ class Dual:
     #########################
     ## NUMPY COMPITABILITY ##
     #########################
-    
+    # TODO: here add the rest of the functions. trigonometric functions stand alone.
     _sym_ufuncs = [add, subtract, negative, positive, rint, heaviside, sign]
     _mul_ufuncs = [multiply, matmul]
     _div_ufuncs = [divide, true_divide, floor_divide, remainder, mod, fmod]
@@ -189,6 +195,6 @@ class Dual:
 
         return Dual(real_result, dual_result)
 
-
+# TODO: any verifications needed?
 def diff(f, x, *args, **kwargs):
     return f(Dual(x, 1), *args, **kwargs).dual
