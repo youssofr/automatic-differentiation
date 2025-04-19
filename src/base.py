@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from numpy import   array, full_like, zeros_like, e,\
+from numpy import   array, asanyarray, full_like, zeros_like, e,\
                     positive, negative, rint, absolute, fabs, sign, heaviside,\
                     conj, conjugate,\
                     add, subtract, multiply, matmul,\
@@ -13,18 +13,13 @@ class Dual:
     """
 
     def __init__(self, real, dual):
-        if(not isinstance(real, Iterable)):
+        if(not (isinstance(real, Iterable) or isinstance(dual, Iterable))):
             self.real = real
             self.dual = dual
             self.shape = ()
             self.dtype = type(real)
-        elif(isinstance(dual, Iterable)):
-            self.real = array(real)
-            self.dual = array(dual, dtype=self.real.dtype)
-            self.shape = self.real.shape
-            self.dtype = self.real.dtype
         else:
-            self.real = array(real)
+            self.real = asanyarray(real)
             self.dual = full_like(real, dual, dtype=self.real.dtype)
             self.shape = self.real.shape
             self.dtype = self.real.dtype
